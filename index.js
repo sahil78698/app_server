@@ -2,7 +2,7 @@
 const express = require("express");
 var http = require("http");
 const app = express();
-const port = 3000;
+const port = process.env.port || 3000;
 var server = http.createServer(app);
 var io = require("socket.io")(server);
 

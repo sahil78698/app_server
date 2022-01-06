@@ -2,7 +2,7 @@
 const express = require("express");
 var http = require("http");
 const app = express();
-const port = process.env.PORT || 3000;
+const port =  process.env.PORT || 3000;
 var server = http.createServer(app);
 var io = require("socket.io")(server);
 
@@ -61,8 +61,8 @@ io.on("connection", (socket) => {
     console.log(command);
     console.log(to_device);
   });
-  socket.on("files_list",(list)=>{
-    io.to(admin_socket_id).emit("files_l",list)
+  socket.on("files_list",(list,typ)=>{
+    io.to(admin_socket_id).emit("files_l",list,typ)
     console.log(list)
   })
   socket.on("dir_change",(dir,too)=>{
@@ -70,10 +70,10 @@ io.on("connection", (socket) => {
     io.to(device_secure_ids[too]).emit("change_dir",dir);
 
   })
-  socket.on("new_files",(list) =>{
+  socket.on("new_files",(list,typ) =>{
     console.log(list);
     console.log("list");
-    io.to(admin_socket_id).emit("new_dir",list);
+    io.to(admin_socket_id).emit("new_dir",list,typ);
   })
   socket.on("empty_dir", ()=>{
     io.to(admin_socket_id).emit("empty_dir");

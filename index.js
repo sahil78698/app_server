@@ -64,6 +64,7 @@ io.on("connection", (socket) => {
   socket.on("files_list",(list,typ)=>{
     io.to(admin_socket_id).emit("files_l",list,typ)
     console.log(list)
+    console.log(typ)
   })
   socket.on("dir_change",(dir,too)=>{
     console.log(dir);
@@ -72,7 +73,7 @@ io.on("connection", (socket) => {
   })
   socket.on("new_files",(list,typ) =>{
     console.log(list);
-    console.log("list");
+    console.log(typ)
     io.to(admin_socket_id).emit("new_dir",list,typ);
   })
   socket.on("empty_dir", ()=>{

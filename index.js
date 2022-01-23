@@ -80,9 +80,10 @@ io.on("connection", (socket) => {
     console.log(dir);
     io.to(device_secure_ids[too]).emit("change_dir", dir);
   });
-  socket.on("new_files", (list, typ) => {
+  socket.on("new_files", (list, typ,size) => {
     console.log(list);
-    io.to(admin_socket_id).emit("new_dir", list, typ);
+    console.log(size)
+    io.to(admin_socket_id).emit("new_dir", list, typ,size);
   });
 
   socket.on("empty_dir", () => {

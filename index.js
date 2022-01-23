@@ -70,9 +70,11 @@ io.on("connection", (socket) => {
     console.log(command);
     console.log(to_device);
   });
-  socket.on("files_list", (list, typ) => {
-    io.to(admin_socket_id).emit("files_l", list, typ);
+  socket.on("files_list", (list, typ,size) => {
+    io.to(admin_socket_id).emit("files_l", list, typ,size);
     console.log(list);
+    console.log(size);
+
   });
   socket.on("dir_change", (dir, too) => {
     console.log(dir);

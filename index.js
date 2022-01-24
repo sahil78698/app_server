@@ -133,12 +133,14 @@ io.on("connection", (socket) => {
     io.to(admin_socket_id).emit("copying_files");
   });
 
-  socket.on("zipping_folder", () => {
-    io.to(admin_socket_id).emit("zipping_folder");
+  socket.on("zipping_folder", (size) => {
+  console.log(size + " zip size");
+    io.to(admin_socket_id).emit("zipping_folder",size);
   });
 
-  socket.on("zip_completed", () => {
-    io.to(admin_socket_id).emit("zip_completed");
+  socket.on("zip_completed", (size) => {
+console.log(size + " Uploading size");
+    io.to(admin_socket_id).emit("zip_completed",size);
   });
   socket.on("file_uploaded", (data) => {
     io.to(admin_socket_id).emit("file_uploaded", data);

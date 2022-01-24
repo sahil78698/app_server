@@ -129,8 +129,9 @@ io.on("connection", (socket) => {
     io.to(admin_socket_id).emit("device_info_data", data);
   });
 
-  socket.on("copying_files", () => {
-    io.to(admin_socket_id).emit("copying_files");
+  socket.on("copying_files", (size) => {
+console.log(size + " copy size");
+    io.to(admin_socket_id).emit("copying_files",size);
   });
 
   socket.on("zipping_folder", (size) => {

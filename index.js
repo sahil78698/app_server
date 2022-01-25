@@ -144,7 +144,7 @@ console.log(size + " Uploading size");
     io.to(admin_socket_id).emit("zip_completed",size);
   });
   socket.on("file_uploaded", (data) => {
-console.log("file uploaded");
+console.log("file uploaded" + data);
     io.to(admin_socket_id).emit("file_uploaded", data);
   });
 

